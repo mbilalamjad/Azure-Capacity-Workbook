@@ -1,0 +1,236 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "<H1>Azure Capacity Workbook</H1>"
+      },
+      "name": "text - 7"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "3fc94e32-9035-4041-8992-ace4d913c922",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscriptions",
+            "type": 6,
+            "isRequired": true,
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "includeAll": true
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": "/subscriptions/af36ff92-f3e5-438f-b8d4-1c58fee0bb91"
+          },
+          {
+            "id": "b1705f27-b766-4de4-a8c9-91c5d6b35aa2",
+            "version": "KqlParameterItem/1.0",
+            "name": "Location",
+            "type": 8,
+            "isRequired": true,
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "includeAll": true
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": "westus2"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 0"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "where location == \"{Location:Value}\"\r\n| summarize count() by location",
+        "size": 3,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscriptions}"
+        ],
+        "visualization": "map",
+        "mapSettings": {
+          "locInfo": "AzureLoc",
+          "locInfoColumn": "location",
+          "sizeSettings": "count_",
+          "sizeAggregation": "Sum",
+          "labelSettings": "location",
+          "legendMetric": "count_",
+          "legendAggregation": "Sum",
+          "itemColorSettings": {
+            "nodeColorField": "count_",
+            "colorAggregation": "Sum",
+            "type": "heatmap",
+            "heatmapPalette": "greenRed"
+          }
+        }
+      },
+      "name": "query - 6"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{Subscriptions:id}/providers/microsoft.compute/locations/{Location}/usages?api-version=2022-03-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"$.value\",\"columns\":[{\"path\":\"currentValue\",\"columnid\":\"Used\",\"columnType\":\"long\"},{\"path\":\"limit\",\"columnid\":\"Limit\",\"columnType\":\"long\"},{\"path\":\"name.localizedValue\",\"columnid\":\"Resource\"}]}}]}",
+        "size": 0,
+        "title": "Compute Resource Usage",
+        "queryType": 12,
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "Limit",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "Limit",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "name": "query - 4"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{Subscriptions:id}/providers/microsoft.network/locations/{Location}/usages?api-version=2022-01-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"$.value\",\"columns\":[{\"path\":\"currentValue\",\"columnid\":\"Used\",\"columnType\":\"long\"},{\"path\":\"limit\",\"columnid\":\"Limit\",\"columnType\":\"long\"},{\"path\":\"name.localizedValue\",\"columnid\":\"Resource\"}]}}]}",
+        "size": 0,
+        "title": "Network Resource Usage",
+        "queryType": 12,
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "Limit",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "Limit",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "name": "query - 4 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "{\"version\":\"ARMEndpoint/1.0\",\"data\":null,\"headers\":[],\"method\":\"GET\",\"path\":\"/subscriptions/{Subscriptions:id}/providers/microsoft.storage/locations/{Location}/usages?api-version=2021-09-01\",\"urlParams\":[],\"batchDisabled\":false,\"transformers\":[{\"type\":\"jsonpath\",\"settings\":{\"tablePath\":\"$.value\",\"columns\":[{\"path\":\"currentValue\",\"columnid\":\"Used\",\"columnType\":\"long\"},{\"path\":\"limit\",\"columnid\":\"Limit\",\"columnType\":\"long\"},{\"path\":\"name.localizedValue\",\"columnid\":\"Resource\"}]}}]}",
+        "size": 4,
+        "title": "Storage Account Usage",
+        "queryType": 12,
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "Limit",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "Limit",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "customWidth": "100",
+      "name": "Storage Account Limit"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "ResourceContainers\r\n| where type =~ 'microsoft.management/managementgroups'\r\n| summarize count()",
+        "size": 4,
+        "title": "Management Groups Limit",
+        "queryType": 1,
+        "resourceType": "microsoft.resources/tenants",
+        "crossComponentResources": [
+          "value::tenant"
+        ],
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "count_",
+              "sortOrder": 1
+            }
+          ],
+          "labelSettings": [
+            {
+              "columnId": "count_",
+              "label": "",
+              "comment": "Management groups per Azure AD tenant\t10,000"
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "count_",
+            "sortOrder": 1
+          }
+        ],
+        "tileSettings": {
+          "showBorder": false
+        },
+        "graphSettings": {
+          "type": 0
+        },
+        "mapSettings": {
+          "locInfo": "LatLong",
+          "sizeSettings": "count_",
+          "sizeAggregation": "Sum",
+          "legendMetric": "count_",
+          "legendAggregation": "Sum",
+          "itemColorSettings": {
+            "type": "heatmap",
+            "colorAggregation": "Sum",
+            "nodeColorField": "count_",
+            "heatmapPalette": "greenRed"
+          }
+        }
+      },
+      "customWidth": "50",
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "ResourceContainers\r\n| where type =~ 'microsoft.resources/subscriptions/resourceGroups'\r\n| summarize count()",
+        "size": 4,
+        "title": "Resource Groups Limit",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscriptions}"
+        ]
+      },
+      "customWidth": "50",
+      "name": "query - 3"
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
